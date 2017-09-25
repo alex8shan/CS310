@@ -7,22 +7,22 @@
  */
 #include <iostream>
 #include <cstdint>
-#include <iostram>
+#include <iostream>
 #include <vector>
 using namespace std;
 
 uint max_square( uint number, uint & count )
 {
-    uint i = n;
-    uint j = i & (i - 1);
+    uint max = number;
+    uint remains = max & (max - 1);
     count++;
-    while( j != 0 )
+    while( remains != 0 )
     {
-      i = j;
-      j = i & (i - 1);
+      max = remains;
+      remains = max & (max - 1);
       count++;
     }
-    return i; 
+    return max; 
 }
 
 int main( int argc, char* argv[] )
@@ -37,5 +37,7 @@ int main( int argc, char* argv[] )
     uint count = 0;
     uint largest = max_square( num, count );
 
-    cout << largest <<" is the largest power of  2 that is less than " << argc << endl;
+    cout << largest <<" is the largest power of  2 that is less than " << num << endl;
+    cerr << count << endl;
+    return 0;
 }
