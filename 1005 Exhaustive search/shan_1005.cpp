@@ -12,53 +12,6 @@
 #include <vector>
 using namespace std;
 
-void search(vector <uint> weights, vector <uint> values, uint capacity)
-{
-  uint weight_sum = 0;
-  uint value_sum = 0;
-  uint element_num = 0;
-  uint input_size = weight.size() + value.size();
-  uint count = 0;
-  stringstream ss;
-
-  for( int i = 0; i < (ipow (2, weights.size())); i++)
-  {
-    weight_sum = 0;
-    value_sum = 0;
-    element_num = 0;
-
-    for (int j = 0; j < weights.size(); j ++ )
-    {
-      //The basic operation is getting counted
-      count++;
-      //The comparasion is the basic operation
-      if(((i >> j) & l) == 1)
-      {
-        total_weight += weights.at(j);
-        total_value +=values.at(j);
-      }
-    }
-    element_num = element_num * 2 + 1;
-    cout.width((20 - num_elements));
-    if(total_weight <= capacity)
-    {
-      cout << total_weight << " ";
-      cout.width(10);
-      cout << total_value << endl;
-    }
-    else
-    {
-      cout<< total" ";
-      cout.width(10);
-      cout << "NF" << endl;  
-    }
-  }
-
-  cout << input_size;
-  cout.width( 5 );
-  cout << "Count is " << count << endl;
-}
-
 
 /**
  * C++ has floating-point exponentiation named pow in the cmath library,
@@ -83,6 +36,57 @@ uint ipow(uint base, uint exp)
 }
 
 
+/**
+ * 
+ * 
+ */
+void search(vector <uint> weights, vector <uint> values, uint capacity)
+{
+  uint weight_sum = 0;
+  uint value_sum = 0;
+  uint element_num = 0;
+  uint input_size = weights.size();
+  uint count = 0;
+
+  for( int i = 0; i < (ipow (2, weights.size())); i++)
+  {
+    weight_sum = 0;
+    value_sum = 0;
+    element_num = 0;
+
+    for (int j = 0; j < weights.size(); j ++ )
+    {
+      //The basic operation is getting counted
+      count++;
+      //The comparasion is the basic operation
+      if(((i >> j) & 1) == 1)
+      {
+        weight_sum += weights.at(j);
+        value_sum +=values.at(j);
+      }
+    }
+    element_num = element_num * 2 + 1;
+    cout.width((20 - element_num));
+    if(weight_sum <= capacity)
+    {
+      cout << weight_sum << " ";
+      cout.width(10);
+      cout << value_sum << endl;
+    }
+    else
+    {
+      cout<< weight_sum << " ";
+      cout.width(10);
+      cout << "NF" << endl;  
+    }
+  }
+
+  cout << "Input size is "<< input_size << endl;
+  cout.width(5);
+  cout << "Count is " << count << endl;
+}
+
+
 int main()
 {
 
@@ -103,6 +107,6 @@ int main()
       values.push_back( value );
     }
   }
-exhaustive_knapsack( weights, values, capacity);
+search( weights, values, capacity );
   return 0;
 }
