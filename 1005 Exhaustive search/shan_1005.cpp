@@ -37,8 +37,11 @@ uint ipow(uint base, uint exp)
 
 
 /**
- * 
- * 
+ * This method searchs through the entire super set of the input using exhaustive search,
+ * and exclude the permutations that is out of the capacity.
+ * @ param weights The vector containing the weight of the input
+ * @ param values The vector containing the values of the input
+ * @ param capacity The maximum capacity.  
  */
 void search(vector <uint> weights, vector <uint> values, uint capacity)
 {
