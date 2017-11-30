@@ -13,6 +13,7 @@
 #include "matrix.h"
 using namespace std;
 uint nodeCount = 0;
+
 /**
   * This function checks to see if the current placement of queens on
   * the board is ok.  It is ok if no queen attacks another queen.  A
@@ -106,8 +107,17 @@ void printBoard(const Matrix<bool> &board)
   * @param k the column in which to place the current queen
   * @param board the board on which to place the queen
   */
-void r_backtrack(uint k, Matrix<bool> &board)
+void r_backtrack(uint k, Matrix<bool> &board, uint n, uint arr[] )
 {
+  // for loop inside function, while inside for 
+  //if (n == i)
+  //send n-1 as parameter
+  // swap 0 to i
+  // if (arr[0,k])
+    //call
+  //else
+    //swap 
+
   // are we done?
   if (k == board.numrows())
   {
@@ -130,7 +140,7 @@ void r_backtrack(uint k, Matrix<bool> &board)
     if (ok(board))
     {
       // keep going
-      r_backtrack(k + 1, board);
+      r_backtrack(k + 1, board, n, arr);
     }
     // if that didn't work, un-try the current attempt
     board.at(row, k) = false;
@@ -165,8 +175,13 @@ int main(int argc, char *argv[])
     for (uint col = 0; col < n; col++)
       board.at(row, col) = false;
 
+    //init array
+  uint arr [n-1];
+  for (uint i = 0; i < n-1; i++){
+    arr[i] = i;
+  }
   // start with column 0
-  r_backtrack(0, board);
+  r_backtrack(0, board, n + 1, arr);
   cout << "No solution" << endl;
   exit(1);
 }
