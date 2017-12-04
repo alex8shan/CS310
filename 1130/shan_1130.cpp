@@ -13,6 +13,7 @@
 #include "matrix.h"
 using namespace std;
 uint nodeCount = 0;
+bool swapRow = false;
 
 /**
   * This function checks to see if the current placement of queens on
@@ -23,6 +24,7 @@ uint nodeCount = 0;
   * @param board the n x n chessboard
   * @return the absence of a conflict with this board arrangement
   */
+
 bool ok(const Matrix<bool> &board)
 {
   uint n = board.numrows();
@@ -99,51 +101,67 @@ void printBoard(const Matrix<bool> &board)
     cout << ' ' << (char)('a' + col) << "  ";
   cout << endl;
 }
+/**
+ * This method is responsible for swapping the vectors.
+ * @param a first element index to swap
+ * @param b second element indexto swao
+ * @param vec The vector contaning elements.
+ */
+void swap(uint a, uint b, vector<uint> &vec)
+{
+  uint temp = vec[a];
+  vec[a] = vec[b];
+  vec[b] = temp;
+}
 
 /**
   * This is the recursive backtracking function. When called, k queens
   * have already been placed on the board in columns 0 .. k-1.  We're
   * trying to place the next queen in column k.
-  * @param k the column in which to place the current queen
   * @param board the board on which to place the queen
+  * @param vec the uint vector
+  * @param x_coords vector that contains x coordinate of queen
+  * @param y_coords vector that contains y coordinate of queen
+  * @param n number of columns
+  * @param row the row number
   */
-void r_backtrack(uint k, Matrix<bool> &board, uint n, uint arr[] )
-{
-  // for loop inside function, while inside for 
-  //if (n == i)
-  //send n-1 as parameter
-  // swap 0 to i
-  // if (arr[0,k])
-    //call
-  //else
-    //swap 
 
-  // are we done?
-  if (k == board.numrows())
+
+void backtrack(Matrix<bool> &board, vector<uint> vec, vector<uint> x_coords, vector<uint> y_coords, uint n, uint row)
+{
+  if (n == 0)
   {
     cout << "Total number of nodes: " << nodeCount << endl;
-    // if so, report and exit
     printBoard(board);
     exit(0);
   }
-
-  // try each row in turn, for this column
-  for (uint row = 0; row < board.numrows(); row++)
+  for (uint i = 0; i < vec.size(); i++)
   {
-    // put a queen here
-    board.at(row, k) = true;
-
-    // printing the row number
-    cout << "[" << k << ", " << row << "]" << endl;
+    if (i == n)
+    {
+      break;
+    }
     nodeCount++;
+    // swap the first and the ith element and place the queen on the board
+    swap(0, i, vec);
+    uint current = vec[0];
+    board.at(vec[0], row) = true;
+    x_coords.push_back(row);
+    y_coords.push_back(vec[0]);
     // did that cause a conflict?
     if (ok(board))
     {
-      // keep going
-      r_backtrack(k + 1, board, n, arr);
+      swap(0, n - 1, vec);
+      backtrack(board, vec, x_coords, y_coords, n - 1, row + 1);
     }
-    // if that didn't work, un-try the current attempt
-    board.at(row, k) = false;
+    x_coords.pop_back();
+    y_coords.pop_back();
+    // reset the board
+    board.at(current, row) = false;
+    if (i + 1 >= n)
+    {
+      break;
+    }
   }
 }
 
@@ -175,13 +193,14 @@ int main(int argc, char *argv[])
     for (uint col = 0; col < n; col++)
       board.at(row, col) = false;
 
-    //init array
-  uint arr [n-1];
-  for (uint i = 0; i < n-1; i++){
-    arr[i] = i;
+  //init vector
+  vector<uint> vec, x, y;
+  for (uint i = 0; i < n; i++)
+  {
+    vec.push_back(i);
   }
   // start with column 0
-  r_backtrack(0, board, n + 1, arr);
+  backtrack(board, vec, x, y, n, 0);
   cout << "No solution" << endl;
   exit(1);
 }
